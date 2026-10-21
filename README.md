@@ -40,10 +40,33 @@ In live mode, Cube sends NEAR testnet transfers using the near-api-js library. O
 
 - [x] Rules engine: allowlist, per-payment limit, daily budget
 - [x] Agent and simulation mode
-- [ ] Live NEAR testnet payments (in progress)
+- [x] Live NEAR testnet payments
 - [ ] Simple web interface for the demo
 - [ ] AI decision layer on top of the rules
 
 ## Requirements
 
 Node.js 18 or newer, and npm install for the live mode.
+
+## Run it live on NEAR testnet
+
+Everything below uses free testnet funds.
+
+    npm install
+    node scripts/new-account.js          # creates a key, saved to .env (never committed)
+    node scripts/fund-testnet.js         # creates and funds a named testnet account
+    node scripts/make-payees.js          # creates two payee accounts for the demo
+    node --env-file=.env src/demo.js --live
+
+## Proof: real testnet transactions
+
+A live run from account `cube-demo.testnet` paid three approved requests and refused three. The refused ones never reached the network. Transaction hashes of the approved payments (open `https://testnet.nearblocks.io/txns/<hash>` to verify):
+
+- `H62BZkn1CgV2AsJRvztC7TixY9uHzahpuoycjcLoXWQ2` (data subscription, 0.01 NEAR)
+- `2G28Yu1YGt6kNruT6AqtNiQPYkhKM71L8tnRxBEZrM2Y` (electricity bill, 0.02 NEAR)
+- `8gMWEkyPV7VT96z4z4gx9fvnzugDCn75Lc1TjN7kKNfH` (extra bill, 0.02 NEAR)
+
+## Security notes
+
+- The private key lives only in a local `.env` file, which is listed in `.gitignore`.
+- Cube only pays recipients on its allowlist, within per-payment and daily limits.

@@ -42,7 +42,7 @@ export class CubeAgent {
     }
 
     this.ledger.push({ to: request.to, amount: request.amount, time: Date.now() });
-    return { ...request, status: "DIBAYAR", note: txInfo };
+    return { ...request, status: "DIBAYAR", note: this.live ? "https://testnet.nearblocks.io/txns/" + txInfo : txInfo };
   }
 
   summary() {
